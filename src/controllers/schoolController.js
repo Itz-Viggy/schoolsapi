@@ -34,9 +34,10 @@ exports.createSchool = async (req, res) => {
     const id = await addSchool(req.body);
     res.status(201).json({ message: 'School added', id });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Database error.' });
+    console.error('💥 DB ERR:', err);
+    res.status(500).json({ error: err.message });
   }
+  
 };
 
 exports.listSchools = async (req, res) => {
