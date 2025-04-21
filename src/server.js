@@ -7,6 +7,7 @@ const app = express();
 
 app.use(express.json());
 app.use('/api', schoolRoutes);
+app.use(express.static(path.join(__dirname, './pages')));
 
 const PORT = process.env.PORT
 app.listen(PORT, '0.0.0.0', () => {

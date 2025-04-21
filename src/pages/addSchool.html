@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add School</title>
+  <style>
+    body { font-family: sans-serif; max-width: 400px; margin: 2rem auto; }
+    label { display: block; margin-top: 1rem; }
+    input { width: 100%; padding: .5rem; margin-top: .25rem; }
+    button { margin-top: 1.5rem; padding: .75rem 1.5rem; }
+    #message { margin-top: 1rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h1>Add School</h1>
+  <form id="addSchoolForm">
+    <label>
+      Name
+      <input type="text" id="name" required>
+    </label>
+    <label>
+      Address
+      <input type="text" id="address" required>
+    </label>
+    <label>
+      Latitude
+      <input type="text" id="latitude" required>
+    </label>
+    <label>
+      Longitude
+      <input type="text" id="longitude" required>
+    </label>
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="message"></div>
+
+  <script>
+    document.getElementById('addSchoolForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const payload = {
+        name: document.getElementById('name').value,
+        address: document.getElementById('address').value,
+        latitude: parseFloat(document.getElementById('latitude').value),
+        longitude: parseFloat(document.getElementById('longitude').value),
+      };
+
+      try {
+        const resp = await fetch('/api/addSchool', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await resp.json();
+        if (resp.ok) {
+          document.getElementById('message').innerText = `✔️ ${data.message} (ID: ${data.id})`;
+          // clear inputs
+          document.getElementById('addSchoolForm').reset();
+        } else {
+          document.getElementById('message').innerText = `❌ ${data.error || 'Failed to add school'}`;
+        }
+      } catch (err) {
+        document.getElementById('message').innerText = `❌ ${err.message}`;
+      }
+    });
+  </script>
+
+</body>
+</html>
