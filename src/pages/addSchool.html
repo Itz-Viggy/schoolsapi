@@ -54,14 +54,12 @@
         });
         const data = await resp.json();
         if (resp.ok) {
-          document.getElementById('message').innerText = `✔️ ${data.message} (ID: ${data.id})`;
-          // clear inputs
+          document.getElementById('message').innerText = `${data.message} (ID: ${data.id})`;
+          
           document.getElementById('addSchoolForm').reset();
-        } else {
-          document.getElementById('message').innerText = `❌ ${data.error || 'Failed to add school'}`;
-        }
+        } 
       } catch (err) {
-        document.getElementById('message').innerText = `❌ ${err.message}`;
+        document.getElementById('message').innerText = `${err.message}`;
       }
     });
   </script>
