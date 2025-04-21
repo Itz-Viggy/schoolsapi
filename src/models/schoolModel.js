@@ -1,16 +1,19 @@
-const db = require('./db');
+// src/models/schoolModel.js
+const pool = require('./db');
 
 async function addSchool({ name, address, latitude, longitude }) {
-  const [result] = await db.execute(
-    'INSERT INTO schools (name, address, latitude, longitude) VALUES (?, ?, ?, ?)',
+  const res = await pool.query(
+    `INSERT INTO schools (name, address, latitude, longitude)
+     VALUES ($1, $2, $3, $4)
+     RETURNING id`,
     [name, address, latitude, longitude]
   );
-  return result.insertId;
+  return res.rows[0].id;
 }
 
 async function getAllSchools() {
-  const [rows] = await db.query('SELECT * FROM schools');
-  return rows;
+  const res = await pool.query('SELECT * FROM schools');
+  return res.rows;
 }
 
 module.exports = { addSchool, getAllSchools };
